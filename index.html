@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Amor ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 15s infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            perspective: 1000px;
+            height: 400px;
+            cursor: pointer;
+            animation: fadeInUp 1s ease backwards;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.4s; }
+        .card:nth-child(3) { animation-delay: 0.6s; }
+        .card:nth-child(4) { animation-delay: 0.8s; }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .card-front {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card-front h3 {
+            color: #667eea;
+            font-size: 1.3em;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transform: rotateY(180deg);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .card-back h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid white;
+            padding-bottom: 10px;
+        }
+
+        .card-back p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        .music-control svg {
+            width: 30px;
+            height: 30px;
+            fill: #667eea;
+        }
+
+        .instructions {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>💕 Para Ti, Mi Amor 💕</h1>
+            <p>Haz clic en cada carta para descubrir lo que siento por ti</p>
+        </div>
+
+        <div class="cards-container">
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="foto.jpeg" alt="Foto 1">
+                        <h3>Tu Sonrisa ✨</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Tu Sonrisa</h3>
+                        <p>
+                            Tu sonrisa ilumina mis días,<br>
+                            como el sol que brilla al amanecer,<br>
+                            cada gesto tuyo me cautiva,<br>
+                            y me hace en el amor renacer.<br><br>
+                            Eres la luz de mi existir,<br>
+                            mi razón de ser feliz.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="ojos.jpeg" alt="Foto 2">
+                        <h3>Tus Ojos 👁️</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Tus Ojos</h3>
+                        <p>
+                            En tus ojos encuentro el universo,<br>
+                            galaxias de amor y ternura,<br>
+                            cada mirada es un verso,<br>
+                            que me llena de dulzura.<br><br>
+                            Me pierdo en tu mirar profundo,<br>
+                            donde encuentro mi mundo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="juntos.webp" alt="Foto 3">
+                        <h3>Nuestro Amor 💖</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Nuestro Amor</h3>
+                        <p>
+                            Contigo el tiempo se detiene,<br>
+                            cada momento es eterno,<br>
+                            mi corazón te pertenece,<br>
+                            eres mi cielo, mi invierno.<br><br>
+                            Juntos escribimos historia,<br>
+                            llena de amor y gloria.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="flipCard(this)">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="Brissa.jpeg" alt="Foto 4">
+                        <h3>Por Siempre 💝</h3>
+                    </div>
+                    <div class="card-back">
+                        <h3>Por Siempre</h3>
+                        <p>
+                            Prometo amarte cada día,<br>
+                            con la misma intensidad,<br>
+                            eres mi única alegría,<br>
+                            mi sueño hecho realidad.<br><br>
+                            Te amo hoy y siempre,<br>
+                            más allá del infinito.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            💡 Haz clic nuevamente en las cartas para voltearlas
+        </div>
+    </div>
+
+    <div class="music-control" onclick="toggleMusic()" id="musicBtn">
+        <svg id="playIcon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+        </svg>
+        <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+        </svg>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="ytmp3free.cc_te-regalo-video-oficial-ulices-chaidez-y-sus-plebes-del-records-2017-youtubemp3free.org.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Crear corazones flotantes
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        createHearts();
+
+        // Función para voltear las cartas
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        // Control de música
+        const music = document.getElementById('bgMusic');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            } else {
+                music.play();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Autoplay (algunos navegadores lo bloquean)
+        document.addEventListener('click', function() {
+            if (!isPlaying) {
+                toggleMusic();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>
